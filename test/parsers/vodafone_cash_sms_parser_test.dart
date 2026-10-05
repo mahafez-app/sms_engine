@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mahafez_core/mahafez_core.dart';
-import 'package:mahafez_sms_engine/mahafez_sms_engine.dart';
+import 'package:sms_engine/sms_engine.dart';
 
 void main() {
   const parser = VodafoneCashSmsParser();
