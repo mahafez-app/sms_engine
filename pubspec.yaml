@@ -1,0 +1,25 @@
+name: mahafez_sms_engine
+description: Layer 2 Headless SMS Engine Capability for Mahafez Platform (Egyptian telecom regex parsers, matcher, and telephony listeners).
+version: 1.0.0
+repository: https://github.com/mahafez-app/mahafez_sms_engine
+publish_to: 'none'
+
+environment:
+  sdk: ^3.13.3
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  mahafez_core:
+    git:
+      url: https://github.com/mahafez-app/mahafez_core.git
+      ref: v1.0.1
+  another_telephony: ^0.4.1
+  equatable: ^2.0.8
+  hive: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
