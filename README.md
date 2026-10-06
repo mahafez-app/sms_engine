@@ -1,40 +1,23 @@
-# mahafez_sms_engine
+# sms_engine
 
-Layer 2 Services / Capabilities Package for the Mahafez Platform.
+Layer 2 headless SMS parsing and telephony capability for Mahafez.
 
-A headless Egyptian wallet SMS listening and regex parsing engine with zero UI dependencies.
+## Responsibility
 
----
+The package parses supported Egyptian wallet/bank SMS formats and provides generic matching, inbox-history and retry primitives. It emits parsed records/events and does not own wallet persistence, transaction entities, Firebase repositories, product UI or app routing. `wallet_product` adapts these generic capabilities to wallet and transaction behavior.
 
-## Architecture Role
+## Layer boundary
 
-In the Mahafez 4-Layer Architecture ($L_4 \to L_3 \to L_2 \to L_1$):
-* **Layer 2 (Capability / Service Layer):** Reusable business capabilities without UI widgets.
-* **Pure Downward Dependencies:** Depends only on `mahafez_core` (Layer 1) and low-level telephony plugins.
-* **Zero Cross-Product Dependencies:** Has zero knowledge of `wallet_product`, `transaction_product`, Firestore, or UI screens.
+The package depends on `mahafez_core` and platform/plugin libraries. It must remain independent of all Layer 3 products and Layer 4 apps. Telephony permission prompts and app lifecycle policy stay with the host/product integration.
 
----
+## Use
 
-## Supported Providers
+```yaml
+dependencies:
+  sms_engine:
+    git:
+      url: https://github.com/mahafez-app/sms_engine.git
+      ref: v1.0.1
+```
 
-* **Vodafone Cash:** Arabic and English transfer/receive formats, reference numbers, balance extraction.
-* **Orange Money / Orange Cash:** Standard Arabic/English formats, bank transfers, operation codes.
-* **Etisalat Cash:** Standard transfer/receive formats, reference codes.
-* **WE Pay:** Standard transfer/receive formats.
-* **InstaPay / Bank Alerts:** NBE, CIB, Banque Misr, QNB, AAIB, HSBC, Fawry.
-
----
-
-## Features
-
-1. **Regex Parsing Engine:** Extracts amount, transaction type (`send` / `receive`), reference number, running balance, and counterparty phone numbers.
-2. **Deterministic Matcher:**
-   - Explicit wallet phone number resolution.
-   - Disambiguation between multiple wallets on the same provider via phone mentions and running balance delta correlation.
-3. **Historical Inbox Synchronization:**
-   - Queries Android SMS inbox with multi-sender filters.
-   - Backward balance-walk algorithm attributing ambiguous history records to registered wallets.
-4. **Retry Queue Management:**
-   - Persistent queue mechanism (`PendingSmsRetryService`) storing raw SMS records for offline/transient failure retries.
-5. **Reactive Event Stream:**
-   - `SmsEngineService` dispatches clean `SmsTransactionEvent` streams for host app consumers.
+See `lib/sms_engine.dart` for the public API and supported parser/event contracts.
